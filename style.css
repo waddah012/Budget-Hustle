@@ -1,0 +1,727 @@
+:root {
+            --bg1: #0a0a1a;
+            --bg2: #1a0a2e;
+            --neon: #21f3ff;
+            --hot: #ff4fd8;
+            --gold: #ffd447;
+            --lime: #8fff5a;
+            --danger: #ff5f6d;
+            --ink: #121212;
+            --panel: rgba(15, 10, 30, 0.85);
+            --panel-border: rgba(255, 255, 255, 0.14);
+            --white: #f4f7ff;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html,
+        body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Arial Black', Arial, sans-serif;
+            background: linear-gradient(180deg, #0a0a1a 0%, #1a0a2e 100%);
+            color: var(--white);
+            touch-action: none;
+            overscroll-behavior: none;
+        }
+
+        #game {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+        }
+
+        #startScreen {
+            position: absolute;
+            inset: 0;
+            z-index: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                linear-gradient(rgba(5, 8, 18, 0.35), rgba(5, 8, 18, 0.68)),
+                radial-gradient(circle at 18% 25%, rgba(33, 243, 255, 0.18), transparent 22%),
+                radial-gradient(circle at 78% 22%, rgba(255, 79, 216, 0.16), transparent 20%),
+                linear-gradient(180deg, #16233f 0%, #0b1328 100%);
+            padding: 18px;
+        }
+
+        .start-card {
+            width: min(94vw, 460px);
+            max-height: min(92dvh, 760px);
+            overflow: auto;
+            border-radius: 22px;
+            padding: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.16);
+            background: rgba(10, 16, 32, 0.84);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(6px);
+        }
+
+        .preview-scene {
+            position: relative;
+            height: 220px;
+            border-radius: 18px;
+            overflow: hidden;
+            margin-bottom: 16px;
+            background:
+                linear-gradient(180deg, #3b5f9c 0%, #15213e 44%, #101522 45%, #0b0f18 100%);
+            border: 2px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .preview-road,
+        .preview-road-v {
+            position: absolute;
+            background: #262c39;
+        }
+
+        .preview-road {
+            left: 0;
+            right: 0;
+            top: 58%;
+            height: 24%;
+        }
+
+        .preview-road-v {
+            top: 8%;
+            bottom: 0;
+            left: 58%;
+            width: 18%;
+        }
+
+        .preview-building {
+            position: absolute;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 18px rgba(0, 0, 0, 0.25);
+        }
+
+        .preview-building.one {
+            left: 8%;
+            top: 18%;
+            width: 22%;
+            height: 26%;
+            background: linear-gradient(180deg, #11b6ff, #1452a7);
+        }
+
+        .preview-building.two {
+            left: 35%;
+            top: 14%;
+            width: 18%;
+            height: 30%;
+            background: linear-gradient(180deg, #f5a623, #a25700);
+        }
+
+        .preview-building.three {
+            right: 8%;
+            top: 22%;
+            width: 16%;
+            height: 24%;
+            background: linear-gradient(180deg, #ff4fd8, #70245c);
+        }
+
+        .preview-building.four {
+            left: 12%;
+            bottom: 10%;
+            width: 18%;
+            height: 18%;
+            background: linear-gradient(180deg, #59d9a5, #0a7b63);
+        }
+
+        .preview-car,
+        .preview-player-dot,
+        .preview-npc-dot {
+            position: absolute;
+            border-radius: 999px;
+        }
+
+        .preview-car {
+            width: 34px;
+            height: 18px;
+            background: #ffd447;
+            top: 62%;
+            left: 14%;
+            box-shadow: 110px 12px 0 #ff5f6d, 210px -6px 0 #21f3ff;
+        }
+
+        .preview-player-dot {
+            width: 16px;
+            height: 16px;
+            background: #21f3ff;
+            border: 2px solid #fff;
+            left: 48%;
+            top: 63%;
+        }
+
+        .preview-npc-dot {
+            width: 12px;
+            height: 12px;
+            background: #8fff5a;
+            left: 72%;
+            top: 68%;
+            box-shadow: -140px 14px 0 #ff4fd8, 46px -118px 0 #fff;
+        }
+
+        .start-title {
+            font-size: clamp(20px, 5vw, 28px);
+            line-height: 1.1;
+            margin: 0 0 8px;
+            color: var(--gold);
+        }
+
+        .start-sub {
+            font-size: 14px;
+            line-height: 1.45;
+            margin: 0 0 14px;
+            color: #dbe5ff;
+        }
+
+        .start-points {
+            display: grid;
+            gap: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .start-cta {
+            width: 100%;
+            min-height: 64px;
+            border: none;
+            border-radius: 16px;
+            background: linear-gradient(180deg, var(--gold), #e18900);
+            color: #120c18;
+            font-size: 18px;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        /* World Map */
+        #world {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(33, 243, 255, 0.12), transparent 18%),
+                radial-gradient(circle at 80% 30%, rgba(255, 79, 216, 0.15), transparent 20%),
+                linear-gradient(180deg, #1a1a3a 0%, #0d0d1f 100%);
+            overflow: hidden;
+        }
+
+        /* Ambient particles */
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: float 8s infinite ease-in-out;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            50% {
+                transform: translateY(-100px) translateX(20px);
+            }
+        }
+
+        /* Streets */
+        .street {
+            position: absolute;
+            background: linear-gradient(180deg, #2a2a3a 0%, #1a1a2a 100%);
+            border: 2px solid #4a4a5a;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .street-h {
+            height: 8%;
+            width: 100%;
+        }
+
+        .street-v {
+            width: 8%;
+            height: 100%;
+        }
+
+        /* Street markings */
+        .street::after {
+            content: '';
+            position: absolute;
+            background: repeating-linear-gradient(90deg,
+                    transparent,
+                    transparent 10px,
+                    rgba(255, 255, 255, 0.3) 10px,
+                    rgba(255, 255, 255, 0.3) 20px);
+            width: 100%;
+            height: 2px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .street-v::after {
+            background: repeating-linear-gradient(180deg,
+                    transparent,
+                    transparent 10px,
+                    rgba(255, 255, 255, 0.3) 10px,
+                    rgba(255, 255, 255, 0.3) 20px);
+            width: 2px;
+            height: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Buildings */
+        .building {
+            position: absolute;
+            border: 3px solid #1a1a2a;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+
+        .building::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 30%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+        }
+
+        .building:hover,
+        .building.nearby {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px var(--neon), 0 4px 15px rgba(0, 0, 0, 0.4);
+            filter: brightness(1.1);
+        }
+
+        .building-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        /* Player */
+        #player {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            background: var(--neon);
+            border: 3px solid #fff;
+            border-radius: 50%;
+            z-index: 100;
+            transition: transform 0.1s linear;
+            box-shadow: 0 0 15px var(--neon), 0 0 30px rgba(33, 243, 255, 0.3);
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        #player::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #000;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 15px var(--neon), 0 0 30px rgba(33, 243, 255, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 0 20px var(--neon), 0 0 40px rgba(33, 243, 255, 0.5);
+            }
+        }
+
+        /* NPCs */
+        .npc {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            z-index: 50;
+        }
+
+        /* Enemies */
+        .enemy {
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            z-index: 60;
+            animation: enemyPulse 0.5s infinite alternate;
+            box-shadow: 0 0 10px currentColor;
+        }
+
+        .enemy.glitch {
+            background: var(--danger);
+            color: var(--danger);
+        }
+
+        .enemy.fomo {
+            background: var(--hot);
+            color: var(--hot);
+        }
+
+        .enemy.debt {
+            background: #8b0000;
+            border: 3px solid #ff0000;
+            color: #ff0000;
+        }
+
+        @keyframes enemyPulse {
+            from {
+                transform: scale(1);
+                filter: brightness(1);
+            }
+
+            to {
+                transform: scale(1.1);
+                filter: brightness(1.2);
+            }
+        }
+
+        /* HUD */
+        #hud {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 200;
+        }
+
+        /* HUD animations */
+        .hud-panel {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hud-panel {
+            position: absolute;
+            background: var(--panel);
+            border: 2px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        #stats {
+            top: 12px;
+            left: 12px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stat-icon {
+            font-size: 16px;
+        }
+
+        #levelInfo {
+            top: 12px;
+            right: 12px;
+            text-align: right;
+        }
+
+        #tapHint {
+            left: 50%;
+            bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+            transform: translateX(-50%);
+            font-size: 14px;
+            text-align: center;
+            max-width: min(88vw, 380px);
+            pointer-events: none;
+        }
+
+        #enterBtn {
+            position: absolute;
+            right: 12px;
+            bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+            width: 110px;
+            height: 88px;
+            border-radius: 24px;
+            border: 2px solid rgba(255, 255, 255, 0.35);
+            background: linear-gradient(180deg, var(--gold) 0%, #ff9f1c 100%);
+            color: #130a20;
+            font-size: 20px;
+            font-weight: 900;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 220;
+            pointer-events: auto;
+        }
+
+        /* Mini-game Overlay */
+        #overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 5, 20, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 300;
+            backdrop-filter: blur(5px);
+        }
+
+        .minigame {
+            width: min(92vw, 420px);
+            background: linear-gradient(180deg, rgba(35, 18, 62, 0.96), rgba(16, 8, 28, 0.96));
+            border: 3px solid var(--neon);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .minigame h2 {
+            margin: 0 0 12px;
+            color: var(--neon);
+            font-size: 20px;
+            text-transform: uppercase;
+        }
+
+        .minigame p {
+            margin: 8px 0;
+            font-size: 14px;
+        }
+
+        .mg-btn {
+            margin: 8px 4px;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 900;
+            cursor: pointer;
+            background: linear-gradient(180deg, var(--gold) 0%, #ff9f1c 100%);
+            color: #130a20;
+        }
+
+        .mg-btn.alt {
+            background: linear-gradient(180deg, var(--neon) 0%, #0ea7d8 100%);
+        }
+
+        .mg-btn.danger {
+            background: linear-gradient(180deg, var(--danger) 0%, #c44569 100%);
+            color: #fff;
+        }
+
+        .mg-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Level Complete */
+        #levelComplete {
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 5, 20, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 400;
+            backdrop-filter: blur(5px);
+        }
+
+        .level-card {
+            animation: popIn 0.3s ease-out;
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .level-card {
+            width: min(90vw, 380px);
+            background: linear-gradient(180deg, rgba(35, 18, 62, 0.96), rgba(16, 8, 28, 0.96));
+            border: 3px solid var(--lime);
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .level-card h1 {
+            color: var(--lime);
+            font-size: 24px;
+            margin: 0 0 12px;
+        }
+
+        /* Popup */
+        #popup {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 900;
+            font-size: 16px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 250;
+            pointer-events: none;
+        }
+
+        #popup.show {
+            opacity: 1;
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 600px) {
+            .building-label {
+                font-size: 8px;
+            }
+
+            .hud-panel {
+                font-size: 11px;
+                padding: 6px 10px;
+                max-width: 46vw;
+            }
+
+            #stats {
+                top: calc(8px + env(safe-area-inset-top, 0px));
+                left: 8px;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            #levelInfo {
+                top: calc(8px + env(safe-area-inset-top, 0px));
+                right: 8px;
+            }
+
+            #tapHint {
+                bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+                font-size: 13px;
+                padding: 8px 10px;
+            }
+
+            #enterBtn {
+                right: 8px;
+                transform: scale(0.94);
+                transform-origin: bottom right;
+            }
+
+            .start-card {
+                padding: 16px;
+            }
+
+            .preview-scene {
+                height: 190px;
+            }
+        }
+
+/* Keep controls readable against the animated city. */
+body { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif; touch-action: manipulation; }
+button { font-family: inherit; }
+button:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
+button:disabled { opacity: .55; cursor: default; }
+.building { color: #fff; padding: 0; }
+.building-label { width: 96%; font-size: clamp(10px, 1.1vw, 15px); text-shadow: 0 1px 3px #000; background: #0b1328e8; padding: 8px 2px; }
+.building-label span { font-size: .8em; font-weight: 600; }
+.building.locked { filter: saturate(.25); border-color: #61657a; }
+.building.completed { border-color: var(--lime); }
+#player { pointer-events: none; margin: -16px; }
+#enemies { pointer-events: none; }
+.enemy { margin: -14px; }
+.minigame { max-height: 90dvh; overflow-y: auto; border-width: 1px; box-shadow: 0 24px 90px #0008; }
+.minigame h3 { font-size: 21px; line-height: 1.4; }
+.minigame .mg-btn { display: block; width: 100%; margin: 10px 0; min-height: 48px; }
+.feedback { background: #ffffff12; padding: 14px; border-radius: 12px; line-height: 1.6; }
+.start-title { font-size: clamp(32px, 7vw, 48px); letter-spacing: -2px; color: #fff; }
+.start-card { border-width: 1px; padding: 28px; }
+.start-sub { line-height: 1.6; color: #b8c5df; }
+.start-points { font-size: 13px; color: #dbe5ff; padding: 12px 0; line-height: 1.6; }
+.text-btn, .mg-btn.text-btn { background: transparent; border: 0; color: #dbe5ff; font-size: 13px; padding: 12px; cursor: pointer; }
+#resetBtn { width: 100%; }
+.utility-btn { position: absolute; z-index: 210; right: 14px; top: 88px; border: 1px solid #ffffff50; color: #fff; background: #0b1328; border-radius: 10px; min-height: 44px; padding: 0 18px; cursor: pointer; }
+#popup { top: 42%; max-width: min(90vw, 440px); width: max-content; line-height: 1.5; font-size: 14px; text-align: center; border: 1px solid #ffffff30; }
+#tapHint { font-size: 12px; }
+#enterBtn { width: 80px; height: 56px; border-radius: 14px; font-size: 16px; }
+#dpad { width: 126px; height: 126px; }
+#levelComplete h2 { color: var(--lime); }
+@media (max-width: 600px) {
+    .building-label { font-size: 9px; padding: 6px 2px; }
+    #tapHint { bottom: calc(148px + env(safe-area-inset-bottom, 0px)); font-size: 11px; width: 85%; }
+    .preview-scene { height: 150px; }
+    .start-card { padding: 20px; }
+    #levelInfo { max-width: 53vw; }
+    #stats { max-width: 43vw; gap: 6px; }
+    .utility-btn { top: 94px; }
+}
+@media (max-height: 540px) {
+    .preview-scene { display: none; }
+    .start-card { max-height: 94dvh; }
+    #tapHint { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* The map ends above a compact row of controls on small screens. */
+.hud-panel { animation: none; }
+.utility-btn { top: auto; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); left: 12px; right: auto; }
+#enterBtn { height: 44px; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); transform: none; }
+#tapHint { bottom: calc(8px + env(safe-area-inset-bottom, 0px)); width: calc(100% - 210px); max-width: 380px; font-size: 11px; padding: 6px; min-height: 44px; display: flex; align-items: center; justify-content: center; }
+@media (max-width: 600px) { .utility-btn { top: auto; } #enterBtn { right: 8px; } }
+@media (max-height: 540px) { #tapHint { display: none; } }

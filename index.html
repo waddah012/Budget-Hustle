@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Budget Hustle</title>
+    <meta name="description" content="Explore a neon city, beat quick money challenges, and unlock ten districts in Budget Hustle.">
+    <meta name="theme-color" content="#0b1328">
+    <link rel="icon" href="icon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <noscript>This game needs JavaScript enabled to play.</noscript>
+    <main id="game" aria-label="Budget Hustle city">
+        <div id="startScreen">
+            <div class="start-card">
+                <div class="preview-scene" aria-hidden="true">
+                    <div class="preview-road"></div>
+                    <div class="preview-road-v"></div>
+                    <div class="preview-building one"></div>
+                    <div class="preview-building two"></div>
+                    <div class="preview-building three"></div>
+                    <div class="preview-building four"></div>
+                    <div class="preview-car"></div>
+                    <div class="preview-player-dot"></div>
+                    <div class="preview-npc-dot"></div>
+                </div>
+                <h1 class="start-title">Budget Hustle</h1>
+                <p class="start-sub">Small wins. Bigger city. Beat quick challenges, grow your balance, and unlock all ten districts.</p>
+                <div class="start-points">
+                    <div>01 &nbsp; Explore with a tap, arrow keys, or WASD</div>
+                    <div>02 &nbsp; Answer quizzes and race the savings clock</div>
+                    <div>03 &nbsp; Dodge the gremlins. Keep what you earn.</div>
+                </div>
+                <p id="saveNote" class="start-sub">Your progress saves on this device.</p>
+                <button class="start-cta" id="startGameBtn">Start a city run</button>
+                <button class="text-btn" id="resetBtn">Reset saved progress</button>
+            </div>
+        </div>
+        <!-- World -->
+        <div id="world">
+            <!-- Streets -->
+            <div class="street street-h" style="top: 33%"></div>
+            <div class="street street-h" style="top: 66%"></div>
+            <div class="street street-v" style="left: 33%"></div>
+            <div class="street street-v" style="left: 66%"></div>
+
+            <!-- Buildings -->
+            <button type="button" class="building" id="budget-hub"
+                style="left: 5%; top: 10%; width: 20%; height: 18%; background: linear-gradient(180deg, #11b6ff 0%, #1452a7 100%);">
+                <div class="building-label">Budget Hub<br>Level 1</div></button>
+            <button type="button" class="building" id="market"
+                style="left: 38%; top: 10%; width: 22%; height: 18%; background: linear-gradient(180deg, #ff9f43 0%, #d94e4e 100%);">
+                <div class="building-label">Legacy Market<br>Level 2</div></button>
+            <button type="button" class="building" id="savings-cafe"
+                style="left: 65%; top: 10%; width: 22%; height: 18%; background: linear-gradient(180deg, #8d5bff 0%, #3b1d8c 100%);">
+                <div class="building-label">Savings Cafe<br>Level 3</div></button>
+            <button type="button" class="building" id="bank"
+                style="left: 5%; top: 45%; width: 22%; height: 18%; background: linear-gradient(180deg, #59d9a5 0%, #0a7b63 100%);">
+                <div class="building-label">Bank & Beyond<br>Level 4</div></button>
+            <button type="button" class="building" id="freedom-park"
+                style="left: 38%; top: 45%; width: 22%; height: 18%; background: linear-gradient(180deg, #ffd447 0%, #c77600 100%);">
+                <div class="building-label">Freedom Park<br>Level 5</div></button>
+            <button type="button" class="building" id="code-lab"
+                style="left: 65%; top: 45%; width: 22%; height: 18%; background: linear-gradient(180deg, #ff4fd8 0%, #8b2a6b 100%);">
+                <div class="building-label">Code Lab<br>Level 6</div></button>
+            <button type="button" class="building" id="tech-center"
+                style="left: 5%; top: 75%; width: 20%; height: 18%; background: linear-gradient(180deg, #00ff88 0%, #008844 100%);">
+                <div class="building-label">Tech Center<br>Level 7</div></button>
+            <button type="button" class="building" id="investment-hub"
+                style="left: 30%; top: 75%; width: 20%; height: 18%; background: linear-gradient(180deg, #ff8800 0%, #884400 100%);">
+                <div class="building-label">Investment Hub<br>Level 8</div></button>
+            <button type="button" class="building" id="venture-vault"
+                style="left: 55%; top: 75%; width: 20%; height: 18%; background: linear-gradient(180deg, #8800ff 0%, #440088 100%);">
+                <div class="building-label">Venture Vault<br>Level 9</div></button>
+            <button type="button" class="building" id="fin-tech-tower"
+                style="left: 80%; top: 75%; width: 15%; height: 18%; background: linear-gradient(180deg, #ff0088 0%, #880044 100%);">
+                <div class="building-label">FinTech Tower<br>Level 10</div></button>
+        </div>
+
+        <!-- Player -->
+        <div id="player"></div>
+
+        <!-- Enemies Container -->
+        <div id="enemies"></div>
+
+        <!-- HUD -->
+        <div id="hud">
+            <div id="stats" class="hud-panel">
+                <div class="stat"><span class="stat-icon">💰</span><span id="money">0</span></div>
+                <div class="stat"><span class="stat-icon">⭐</span><span id="rep">0</span></div>
+                <div class="stat"><span class="stat-icon">❤️</span><span id="lives">3</span></div>
+            </div>
+            <div id="levelInfo" class="hud-panel">
+                <div id="currentLevel">Level 1: Budget Hub</div>
+                <div id="nextUnlock">Next: Legacy Market ($50)</div>
+                <div style="font-size:10px;margin-top:4px;">Tap a district or press E nearby</div>
+            </div>
+            <div id="tapHint" class="hud-panel">Tap to move · Tap a district</div>
+            <button id="enterBtn">PLAY</button>
+        </div>
+
+        <button id="menuBtn" class="utility-btn">Menu</button>
+        <!-- Popup -->
+        <div id="popup" role="status" aria-live="polite"></div>
+
+        <!-- Mini-game Overlay -->
+        <div id="overlay" role="dialog" aria-modal="true" aria-label="District challenge">
+            <div class="minigame" id="minigameContent"></div>
+        </div>
+
+        <!-- Level Complete -->
+        <div id="levelComplete" role="dialog" aria-modal="true" aria-label="Round result">
+            <div class="level-card">
+                <h2 id="resultTitle">Round complete</h2>
+                <p id="levelReward">Reward: $100</p>
+                <button class="mg-btn" id="nextLevelBtn">Next Level →</button>
+                <button class="mg-btn alt" id="stayBtn">Back to city</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="rules.js" defer></script>
+    <script src="game.js" defer></script>
+</body>
+
+</html>
